@@ -49,6 +49,10 @@ pip install requests beautifulsoup4 openai bs4 lxml
 PDF 파일을 생성하기 위해서는 LaTeX이 시스템에 설치되어 있어야 합니다. 이 도구는 `xelatex`를 사용하여 PDF를 컴파일합니다. 다음과 같은 방법으로 LaTeX 배포판을 설치할 수 있습니다:
 
 - **TeX Live** (Cross-platform): [TeX Live 다운로드 페이지](https://www.tug.org/texlive/)
+  ```bash
+  ex)
+  sudo apt-get install texlive-full
+  ```
 - **MiKTeX** (Windows): [MiKTeX 다운로드 페이지](https://miktex.org/download)
 - **MacTeX** (macOS): [MacTeX 다운로드 페이지](https://tug.org/mactex/)
 
@@ -59,6 +63,14 @@ PDF 파일을 생성하기 위해서는 LaTeX이 시스템에 설치되어 있�
 - [Noto Sans KR](https://fonts.google.com/noto/specimen/Noto+Sans+KR)
 
 다운로드한 후 시스템에 설치해 주세요.
+
+  ```bash
+  ex)
+  cp Noto_Sans_KR.zip /usr/share/fonts/truetype
+  unzip Noto_Sans_KR.zip
+  rm Noto_Sans_KR.zip
+  fc-cache -fv
+  ```
 
 ### OpenAI API 키
 
