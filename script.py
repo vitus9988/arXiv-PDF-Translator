@@ -4,7 +4,7 @@ import re
 import tarfile
 import requests
 import concurrent.futures
-import openai  # GPT 사용을 위한 openai 라이브러리
+from openai import OpenAI  # GPT 사용을 위한 openai 라이브러리
 from bs4 import BeautifulSoup
 import logging
 import shutil
@@ -13,6 +13,10 @@ import time
 
 # 로그 설정
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+client = OpenAI(
+    api_key = 'OPENAI_API_KEY' # Openai api key
+)
+
 
 def extract_arxiv_id(url: str) -> str:
     """URL에서 arXiv ID를 추출"""
@@ -41,7 +45,7 @@ def translate_text(text: str, paper_info: dict, chunk_size: int, target_language
     retry_attempts = 3  # Number of retry attempts
     for attempt in range(retry_attempts):
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 response_format={"type": "json_object"},
                 messages=[
@@ -113,7 +117,7 @@ def translate_text(text: str, paper_info: dict, chunk_size: int, target_language
                 ]
             )
 
-            translated_content = response.choices[0].message['content']
+            translated_content = response.choices[0].message.content
             translation_result = json.loads(translated_content)
             translation_lines = translation_result["translate"]['lines']
             translated_line_count = len(translation_lines)
@@ -453,9 +457,6 @@ def download_arxiv_intro_and_tex(arxiv_id: str, download_dir: str, target_langua
     compile_main_tex(extract_to, arxiv_id, font_name)
 
 if __name__ == "__main__":
-    # GPT API 호출을 위한 설정
-    openai.api_key = 'OPENAI_API_KEY'  # 여기에 실제 API 키를 입력하세요.
-
     arxiv_input = input("Enter ArXiv ID or URL: ")
     arxiv_id = extract_arxiv_id(arxiv_input)
     download_dir = 'arxiv_downloads'
